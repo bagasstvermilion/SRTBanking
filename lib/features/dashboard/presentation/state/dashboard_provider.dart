@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../data/datasources/dashboard_remote_datasource.dart';
+import '../../data/repositories/dashboard_repository_impl.dart';
 import '../../domain/entities/dashboard_entity.dart';
+import '../../domain/repositories/dashboard_repository.dart';
 import '../../domain/usecases/get_dashboard_usecase.dart';
-import '../../../auth/presentation/state/auth_provider.dart'; // sesuaikan path
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -40,16 +44,23 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
   }
 }
 
-// ─── Provider ────────────────────────────────────────────────────────────────
+// ─── Providers ───────────────────────────────────────────────────────────────
+
+final dashboardRepositoryProvider = Provider<DashboardRepository>((ref) {
+  return DashboardRepositoryImpl(
+    remoteDatasource: DashboardRemoteDatasourceImpl(
+      firestore: FirebaseFirestore.instance,
+    ),
+  );
+});
+
+final getDashboardUsecaseProvider = Provider<GetDashboardUsecase>((ref) {
+  final repo = ref.read(dashboardRepositoryProvider);
+  return GetDashboardUsecase(repo);
+});
 
 final dashboardProvider =
     StateNotifierProvider<DashboardNotifier, DashboardState>((ref) {
       final usecase = ref.read(getDashboardUsecaseProvider);
       return DashboardNotifier(usecase);
     });
-
-// Provider untuk usecase — daftarkan di dependency_injection atau di sini
-final getDashboardUsecaseProvider = Provider<GetDashboardUsecase>((ref) {
-  final repo = ref.read(dashboardRepositoryProvider);
-  return GetDashboardUsecase(repo);
-});

@@ -17,7 +17,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     super.initState();
     // Ganti dengan userId dari auth provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dashboardProvider.notifier).loadDashboard('USER_ID_HERE');
+      // Sementara hardcode dulu, nanti swap dengan userId dari Firebase Auth
+      ref.read(dashboardProvider.notifier).loadDashboard('test-user-123');
     });
   }
 
@@ -89,8 +90,14 @@ class _Header extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Selamat datang 👋', style: TextStyle(color: Colors.grey)),
-            Text(name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'Selamat datang 👋',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         CircleAvatar(
@@ -111,7 +118,10 @@ class _BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatted = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ').format(balance);
+    final formatted = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+    ).format(balance);
 
     return Container(
       width: double.infinity,
@@ -128,17 +138,30 @@ class _BalanceCard extends StatelessWidget {
             color: Colors.blue.withOpacity(0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
-          )
+          ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Saldo Rekening', style: TextStyle(color: Colors.white70, fontSize: 13)),
+          const Text(
+            'Saldo Rekening',
+            style: TextStyle(color: Colors.white70, fontSize: 13),
+          ),
           const SizedBox(height: 8),
-          Text(formatted, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+          Text(
+            formatted,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
-          Text(accountNumber, style: const TextStyle(color: Colors.white70, letterSpacing: 2)),
+          Text(
+            accountNumber,
+            style: const TextStyle(color: Colors.white70, letterSpacing: 2),
+          ),
         ],
       ),
     );
@@ -169,7 +192,10 @@ class _QuickActions extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
               ),
-              child: Icon(a['icon'] as IconData, color: const Color(0xFF1565C0)),
+              child: Icon(
+                a['icon'] as IconData,
+                color: const Color(0xFF1565C0),
+              ),
             ),
             const SizedBox(height: 8),
             Text(a['label'] as String, style: const TextStyle(fontSize: 12)),
@@ -190,7 +216,10 @@ class _TransactionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = transaction.isDebit ? Colors.red : Colors.green;
     final sign = transaction.isDebit ? '-' : '+';
-    final formatted = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ').format(transaction.amount);
+    final formatted = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+    ).format(transaction.amount);
     final date = DateFormat('dd MMM yyyy').format(transaction.date);
 
     return Container(
@@ -199,7 +228,9 @@ class _TransactionTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6),
+        ],
       ),
       child: Row(
         children: [
@@ -220,12 +251,21 @@ class _TransactionTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(transaction.title, style: const TextStyle(fontWeight: FontWeight.w600)),
-                Text(date, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                Text(
+                  transaction.title,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  date,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
               ],
             ),
           ),
-          Text('$sign $formatted', style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+          Text(
+            '$sign $formatted',
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
