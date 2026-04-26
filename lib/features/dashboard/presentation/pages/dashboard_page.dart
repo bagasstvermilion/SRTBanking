@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import '../../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../state/dashboard_provider.dart';
 
@@ -17,8 +18,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     super.initState();
     // Ganti dengan userId dari auth provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Sementara hardcode dulu, nanti swap dengan userId dari Firebase Auth
-      ref.read(dashboardProvider.notifier).loadDashboard('test-user-123');
+      ref.read(dashboardProvider.notifier).loadDashboard('USER_ID_HERE');
     });
   }
 
@@ -118,10 +118,7 @@ class _BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatted = NumberFormat.currency(
-      locale: 'id_ID',
-      symbol: 'Rp ',
-    ).format(balance);
+    final formatted = CurrencyFormatter.formatCompact(balance);
 
     return Container(
       width: double.infinity,
@@ -216,10 +213,7 @@ class _TransactionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = transaction.isDebit ? Colors.red : Colors.green;
     final sign = transaction.isDebit ? '-' : '+';
-    final formatted = NumberFormat.currency(
-      locale: 'id_ID',
-      symbol: 'Rp ',
-    ).format(transaction.amount);
+    final formatted = CurrencyFormatter.formatCompact(transaction.amount);
     final date = DateFormat('dd MMM yyyy').format(transaction.date);
 
     return Container(
