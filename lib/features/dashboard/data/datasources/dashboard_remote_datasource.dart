@@ -18,7 +18,7 @@ class DashboardRemoteDatasourceImpl implements DashboardRemoteDatasource {
       final userDoc = await firestore.collection('users').doc(userId).get();
 
       if (!userDoc.exists) {
-        throw ServerException('User not found');
+        throw ServerException('Data akun belum tersedia, coba lagi');
       }
 
       // Ambil 5 transaksi terbaru

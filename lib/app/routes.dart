@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:srtbanking/features/auth/presentation/pages/login_page.dart';
+import 'package:srtbanking/features/auth/presentation/pages/register_page.dart';
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
 
 class AppRoutes {
   // Route names
-  static const String dashboard = '/';
-
-  // Tambah route lain nanti di sini:
-  // static const String login = '/login';
-  // static const String transaction = '/transaction';
-  // static const String transfer = '/transfer';
+  static const String dashboard = '/dashboard';
+  static const String login = '/login';
+  static const String register = '/register';
 
   // Route map
   static final Map<String, WidgetBuilder> routes = {
     dashboard: (_) => const DashboardPage(),
-
-    // Nanti tinggal tambah:
-    // login: (_) => const LoginPage(),
-    // transaction: (_) => const TransactionPage(),
-    // transfer: (_) => const TransferPage(),
+    login: (_) => const LoginPage(),
+    register: (_) => const RegisterPage(),
   };
 }

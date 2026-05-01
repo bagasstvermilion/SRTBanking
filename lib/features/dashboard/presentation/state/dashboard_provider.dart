@@ -35,12 +35,26 @@ class DashboardNotifier extends StateNotifier<DashboardState> {
   Future<void> loadDashboard(String userId) async {
     state = DashboardLoading();
 
-    final result = await _usecase(userId);
+    // Retry sampai 3x kalau user doc belum ada
+    for (int i = 0; i < 5; i++) {
+      final result = await _usecase(userId);
 
-    result.fold(
-      (failure) => state = DashboardError(failure.message),
-      (data) => state = DashboardLoaded(data),
-    );
+      final done = result.fold(
+        (failure) {
+          if (i == 4) state = DashboardError(failure.message);
+          return false;
+        },
+        (data) {
+          state = DashboardLoaded(data);
+          return true;
+        },
+      );
+
+      if (done) return;
+      await Future.delayed(
+        const Duration(seconds: 2),
+      ); // tunggu sebentar lalu retry
+    }
   }
 }
 

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../features/auth/presentation/state/auth_provider.dart';
+import '../features/auth/presentation/pages/login_page.dart';
+import '../features/dashboard/presentation/pages/dashboard_page.dart';
 import 'routes.dart';
 
 class MyApp extends StatelessWidget {
@@ -14,8 +18,25 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
-      initialRoute: AppRoutes.dashboard,
       routes: AppRoutes.routes,
+      home: const _AuthGate(),
     );
+  }
+}
+
+class _AuthGate extends ConsumerWidget {
+  const _AuthGate();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
+    return switch (authState) {
+      AuthInitial() || AuthLoading() => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      AuthAuthenticated() => const DashboardPage(),
+      _ => const LoginPage(),
+    };
   }
 }
