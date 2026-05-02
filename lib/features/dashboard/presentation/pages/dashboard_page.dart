@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:srtbanking/features/auth/presentation/state/auth_provider.dart';
 import '../../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../state/dashboard_provider.dart';
+import 'profile_menu_page.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -18,7 +20,10 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     super.initState();
     // Ganti dengan userId dari auth provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dashboardProvider.notifier).loadDashboard('USER_ID_HERE');
+      final authState = ref.read(authProvider);
+      if (authState is AuthAuthenticated) {
+        ref.read(dashboardProvider.notifier).loadDashboard(authState.user.uid);
+      }
     });
   }
 
@@ -100,9 +105,15 @@ class _Header extends StatelessWidget {
             ),
           ],
         ),
-        CircleAvatar(
-          backgroundColor: Colors.blue.shade100,
-          child: Text(name.isNotEmpty ? name[0].toUpperCase() : 'U'),
+        GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ProfileMenuPage(name: name)),
+          ),
+          child: CircleAvatar(
+            backgroundColor: Colors.blue.shade100,
+            child: Text(name.isNotEmpty ? name[0].toUpperCase() : 'U'),
+          ),
         ),
       ],
     );
