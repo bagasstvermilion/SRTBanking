@@ -32,13 +32,26 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     final state = ref.watch(dashboardProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
-      body: switch (state) {
-        DashboardLoading() => const Center(child: CircularProgressIndicator()),
-        DashboardError(:final message) => _ErrorView(message: message),
-        DashboardLoaded(:final data) => _DashboardContent(data: data),
-        _ => const SizedBox.shrink(),
-      },
+      backgroundColor: Colors.transparent,
+      body: SizedBox.expand(
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color.fromARGB(255, 231, 243, 255), Colors.white],
+            ),
+          ),
+          child: switch (state) {
+            DashboardLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            DashboardError(:final message) => _ErrorView(message: message),
+            DashboardLoaded(:final data) => _DashboardContent(data: data),
+            _ => const SizedBox.shrink(),
+          },
+        ),
+      ),
     );
   }
 }
@@ -53,6 +66,7 @@ class _DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:srtbanking/features/dashboard/presentation/pages/main_page.dart';
 import '../features/auth/presentation/state/auth_provider.dart';
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
@@ -35,7 +36,7 @@ class _AuthGate extends ConsumerWidget {
       AuthInitial() || AuthLoading() => const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       ),
-      AuthAuthenticated() => const DashboardPage(),
+      AuthAuthenticated() => const MainPage(),
       _ => const LoginPage(),
     };
   }
