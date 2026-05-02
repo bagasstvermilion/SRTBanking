@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:srtbanking/core/error/exceptions.dart';
-
+import '../../../../core/utils/format_account_number.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
@@ -93,10 +93,14 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
 
   String _generateAccountNumber(String uid) {
     final digits = uid.replaceAll(RegExp(r'[^0-9]'), '');
+
     final base = digits.length >= 8
         ? digits.substring(0, 8)
         : digits.padLeft(8, '0');
-    return '8800-$base';
+
+    final formatted = FormatAccountNumber.format(base);
+
+    return '8800-$formatted';
   }
 
   String _mapAuthError(String code) => switch (code) {

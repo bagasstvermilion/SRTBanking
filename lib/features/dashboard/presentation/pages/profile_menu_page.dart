@@ -105,7 +105,12 @@ class ProfileMenuPage extends ConsumerWidget {
                       ),
                     );
                     if (confirm == true) {
-                      ref.read(authProvider.notifier).logout();
+                      await ref.read(authProvider.notifier).logout();
+                      if (context.mounted) {
+                        Navigator.of(
+                          context,
+                        ).popUntil((route) => route.isFirst);
+                      }
                     }
                   },
                 ),

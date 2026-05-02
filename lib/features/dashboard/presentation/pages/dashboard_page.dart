@@ -5,7 +5,7 @@ import 'package:srtbanking/features/auth/presentation/state/auth_provider.dart';
 import '../../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../state/dashboard_provider.dart';
-import '../pages/pofile_menu_page.dart';
+import 'profile_menu_page.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
