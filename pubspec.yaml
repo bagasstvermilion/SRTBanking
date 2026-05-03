@@ -12,6 +12,8 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  phosphor_flutter: ^2.1.0
+
   # State Management
   flutter_riverpod: ^2.6.1
 

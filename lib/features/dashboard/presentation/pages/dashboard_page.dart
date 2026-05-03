@@ -6,6 +6,7 @@ import '../../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../state/dashboard_provider.dart';
 import 'profile_menu_page.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -39,7 +40,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color.fromARGB(255, 231, 243, 255), Colors.white],
+              // colors: [Color.fromARGB(255, 231, 243, 255), Colors.white],
+              colors: [Color(0xFFFAFAFA), Color(0xFFFAFAFA)],
             ),
           ),
           child: switch (state) {
@@ -157,7 +159,7 @@ class _BalanceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.3),
+            color: Colors.blue.withOpacity(0.2),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -171,14 +173,24 @@ class _BalanceCard extends StatelessWidget {
             style: TextStyle(color: Colors.white70, fontSize: 13),
           ),
           const SizedBox(height: 8),
-          Text(
-            formatted,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatted,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Icon(Icons.visibility, color: Colors.white),
+              ),
+            ],
           ),
+
           const SizedBox(height: 16),
           Text(
             accountNumber,
@@ -202,28 +214,79 @@ class _QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: actions.map((a) {
-        return Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 255, 255, 255),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: const Color.fromARGB(31, 37, 37, 37), blurRadius: 8),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Text(
+                  "Transaksi Favorit",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                ),
               ),
-              child: Icon(
-                a['icon'] as IconData,
-                color: const Color(0xFF1565C0),
+              Row(
+                children: [
+                  Text(
+                    "Sesuaikan",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1565C0),
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  Icon(
+                    PhosphorIcons.slidersHorizontal(),
+                    color: Color(0xFF1565C0),
+                    size: 21,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(a['label'] as String, style: const TextStyle(fontSize: 12)),
-          ],
-        );
-      }).toList(),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: actions.map((a) {
+              return Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black12, blurRadius: 8),
+                      ],
+                    ),
+                    child: Icon(
+                      a['icon'] as IconData,
+                      color: const Color(0xFF1565C0),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    a['label'] as String,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }
